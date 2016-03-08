@@ -1,5 +1,5 @@
 /.idea/
 /target/
-Technology.iml
+*.iml
 README
 atlassian-ide-plugin.xml
