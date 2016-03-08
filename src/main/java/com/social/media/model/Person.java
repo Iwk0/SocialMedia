@@ -15,11 +15,6 @@ public class Person extends ParentEntity {
     @Column
     @Getter
     @Setter
-    private String username;
-
-    @Column
-    @Getter
-    @Setter
     private String firstName;
 
     @Column

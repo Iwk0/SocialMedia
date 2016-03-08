@@ -12,15 +12,12 @@
                             http://www.springframework.org/schema/jee/spring-jee.xsd">
 
     <jee:jndi-lookup id="dataSource" jndi-name="jdbc/social_media" expected-type="javax.sql.DataSource"/>
-    <!--Enable annotation for role check-->
-    <!--<global-method-security pre-post-annotations="enabled" />-->
 
     <http pattern="/favicon.ico" security="none"/>
     <http pattern="/resources/**" security="none"/>
 
     <http use-expressions="true">
         <intercept-url pattern="/login*" access="isAnonymous()"/>
-        <!--        <intercept-url pattern="/test*" access="hasRole('ADMIN')" />-->
         <intercept-url pattern="/accessDenied" access="isAuthenticated()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
 
@@ -35,16 +32,6 @@
         <access-denied-handler error-page="/accessDenied"/>
         <csrf/>
     </http>
-
-    <!--    <beans:bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-            <beans:property name="targetClass"><beans:value>org.springframework.security.core.context.SecurityContextHolder</beans:value></beans:property>
-            <beans:property name="targetMethod"><beans:value>setStrategyName</beans:value></beans:property>
-            <beans:property name="arguments">
-                <beans:list>
-                    <beans:value>MODE_INHERITABLETHREADLOCAL</beans:value>
-                </beans:list>
-            </beans:property>
-        </beans:bean>-->
 
     <authentication-manager>
         <authentication-provider>
