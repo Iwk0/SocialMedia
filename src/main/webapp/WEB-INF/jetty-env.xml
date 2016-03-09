@@ -2,7 +2,6 @@
 <Configure id="social_media" class="org.eclipse.jetty.webapp.WebAppContext">
     <!--<Set name="contextPath">/foo</Set>-->
     <New id="mydatasource" class="org.eclipse.jetty.plus.jndi.Resource">
-        <Arg></Arg>
         <Arg>jdbc/social_media</Arg>
         <Arg>
             <New class="com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource">
