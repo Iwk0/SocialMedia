@@ -30,7 +30,6 @@
     <filter>
         <filter-name>characterEncodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-        <!--<async-supported>true</async-supported>-->
         <init-param>
             <param-name>encoding</param-name>
             <param-value>UTF-8</param-value>
@@ -68,12 +67,5 @@
         <param-name>log4jConfigLocation</param-name>
         <param-value>classpath:log4j.properties</param-value>
     </context-param>
-
-    <!--    <jsp-config>
-            <jsp-property-group>
-                <url-pattern>*.jsp</url-pattern>
-                <page-encoding>UTF-8</page-encoding>
-            </jsp-property-group>
-        </jsp-config>-->
 
 </web-app>

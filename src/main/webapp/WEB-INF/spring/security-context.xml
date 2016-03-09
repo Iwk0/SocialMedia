@@ -37,8 +37,8 @@
         <authentication-provider>
             <password-encoder hash="sha-256"/>
             <jdbc-user-service data-source-ref="dataSource"
-                               users-by-username-query="select email as username, password, true from person where email = ? and status = 'ACTIVE'"
-                               authorities-by-username-query="select email as username, role as authorities from person where email = ? and status = 'ACTIVE'"/>
+                               users-by-username-query="SELECT email AS username, password, TRUE FROM person WHERE email = ? AND status = 'ACTIVE'"
+                               authorities-by-username-query="SELECT email AS username, role AS authorities FROM person WHERE email = ? AND status = 'ACTIVE'"/>
         </authentication-provider>
     </authentication-manager>
 

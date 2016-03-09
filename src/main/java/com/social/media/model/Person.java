@@ -1,5 +1,6 @@
 package com.social.media.model;
 
+import com.social.media.validation.UniqueEmail;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
@@ -31,6 +32,7 @@ public class Person extends ParentEntity {
     @Column
     @Getter
     @Setter
+    @UniqueEmail
     private String email;
 
     @Column
