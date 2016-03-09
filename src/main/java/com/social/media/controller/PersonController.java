@@ -4,6 +4,8 @@ import com.social.media.model.Person;
 import com.social.media.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,5 +38,11 @@ public class PersonController {
         personRepository.save(person);
 
         return "redirect:/login";
+    }
+
+    @RequestMapping(value = "/settings", method = RequestMethod.GET)
+    public ModelAndView settings() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return new ModelAndView("/person/settings", "person", personRepository.findByEmail(auth.getName()));
     }
 }

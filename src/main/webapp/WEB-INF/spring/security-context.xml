@@ -19,7 +19,6 @@
     <http use-expressions="true">
         <intercept-url pattern="/login*" access="isAnonymous()"/>
         <intercept-url pattern="/new" access="isAnonymous()"/>
-        <intercept-url pattern="/accessDenied" access="isAuthenticated()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
 
         <form-login login-page="/login"
@@ -29,8 +28,6 @@
                     authentication-failure-url="/login?loginError=1"/>
 
         <logout logout-url="/logout" logout-success-url="/login"/>
-        <!-- 403 Handler -->
-        <access-denied-handler error-page="/accessDenied"/>
         <csrf/>
     </http>
 
