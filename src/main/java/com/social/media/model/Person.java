@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
 @MatchPassword
@@ -15,16 +16,19 @@ public class Person extends ParentEntity {
     @Column
     @Getter
     @Setter
+    @Size(min = 3)
     private String firstName;
 
     @Column
     @Getter
     @Setter
+    @Size(min = 3)
     private String lastName;
 
     @Column
     @Getter
     @Setter
+    @Size(min = 3)
     private String surname;
 
     @Email
@@ -37,11 +41,13 @@ public class Person extends ParentEntity {
     @Column
     @Getter
     @Setter
+    @Size(min = 6, max = 36)
     private String password;
 
     @Transient
     @Getter
     @Setter
+    @Size(min = 6, max = 36)
     private String rawPassword;
 
     @Column

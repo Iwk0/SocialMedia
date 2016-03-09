@@ -8,6 +8,13 @@
     </head>
     <body>
         <h1>Social Media</h1>
+        <a href="javascript:logout();">Logout</a>
+        <form th:action="@{/logout}" id="logoutForm" method="post"></form>
+        <script>
+            function logout() {
+                document.getElementById("logoutForm").submit();
+            }
+        </script>
         <div th:include="this :: content"></div>
     </body>
 </html>

@@ -24,29 +24,35 @@
                 <div class="form-group">
                     <label for="firstName" th:text="#{label.firstName}">...</label>
                     <input type="text" class="form-control" id="firstName" th:field="*{firstName}" placeholder="Име"/>
+                    <label th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Name Error</label>
                 </div>
                 <div class="form-group">
                     <label for="lastName" th:text="#{label.lastName}">...</label>
                     <input type="text" class="form-control" id="lastName" th:field="*{lastName}" placeholder="Фамилия"/>
+                    <label th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Name Error</label>
                 </div>
                 <div class="form-group">
                     <label for="egn" th:text="#{label.surname}">...</label>
                     <input type="text" class="form-control" id="egn" th:field="*{surname}" placeholder="Презиме"/>
+                    <label th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Name Error</label>
                 </div>
                 <div class="form-group">
                     <label for="password" th:text="#{label.password}">...</label>
                     <input type="password" class="form-control" id="password" th:field="*{password}"
                            placeholder="Парола"/>
+                    <label th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name Error</label>
                 </div>
                 <div class="form-group">
                     <label for="confirmed_password" th:text="#{label.confirmed.password}">...</label>
                     <input type="password" class="form-control" id="confirmed_password" th:field="*{rawPassword}"
                            placeholder="Потвърди парола"/>
+                    <label th:if="${#fields.hasErrors('rawPassword')}" th:errors="*{rawPassword}">Name Error</label>
                 </div>
                 <div class="form-group">
                     <label for="email_registration" th:text="#{label.email}">...</label>
                     <input type="text" class="form-control" id="email_registration" th:field="*{email}"
                            placeholder="Емайл"/>
+                    <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Name Error</label>
                 </div>
                 <input type="submit" class="btn btn-default" id="registration" th:value="#{button.registration}"/>
             </form>

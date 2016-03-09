@@ -30,7 +30,7 @@ public class PersonController {
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String createPerson(@Valid @ModelAttribute("person") Person person, BindingResult result) {
         if (result.hasErrors()) {
-            return "redirect:/login";
+            return "/login";
         }
 
         ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder(256);
