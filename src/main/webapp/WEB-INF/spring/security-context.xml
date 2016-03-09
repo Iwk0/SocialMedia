@@ -18,6 +18,7 @@
 
     <http use-expressions="true">
         <intercept-url pattern="/login*" access="isAnonymous()"/>
+        <intercept-url pattern="/new" access="isAnonymous()"/>
         <intercept-url pattern="/accessDenied" access="isAuthenticated()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
 

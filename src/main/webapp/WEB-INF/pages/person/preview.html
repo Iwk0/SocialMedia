@@ -5,30 +5,11 @@
     <body>
         <div th:fragment="content">
             <div th:object="${person}">
-                <p>Name: <label th:text="*{firstName}">...</label></p>
+                <p>Name: <label th:text="*{firstName}">...</label> <a href="#">Delete</a></p>
                 <p>Last name: <label th:text="*{lastName}">...</label></p>
                 <p>Surname: <label th:text="*{surname}">...</label></p>
                 <p>Email: <label th:text="*{email}">...</label></p>
             </div>
-            <form role="form" id="employeeForm" th:object="${person}" th:action="@{/new}" method="post">
-                <div class="form-group">
-                    <label for="firstName" th:text="#{label.firstName}">...</label>
-                    <input type="text" class="form-control" id="firstName" th:field="*{firstName}" placeholder="Име"/>
-                </div>
-                <div class="form-group">
-                    <label for="lastName" th:text="#{label.lastName}">...</label>
-                    <input type="text" class="form-control" id="lastName" th:field="*{lastName}" placeholder="Фамилия"/>
-                </div>
-                <div class="form-group">
-                    <label for="egn" th:text="#{label.EGN}">...</label>
-                    <input type="text" class="form-control" id="egn" th:field="*{surname}" placeholder="ЕГН"/>
-                </div>
-                <div class="form-group">
-                    <label for="email" th:text="#{label.EGN}">...</label>
-                    <input type="text" class="form-control" id="email" th:field="*{email}" placeholder="Емайл"/>
-                </div>
-                <input type="submit" class="btn btn-default" id="registration" th:value="#{button.registration}"/>
-            </form>
         </div>
     </body>
 </html>

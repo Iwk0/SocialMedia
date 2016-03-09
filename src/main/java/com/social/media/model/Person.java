@@ -1,16 +1,15 @@
 package com.social.media.model;
 
+import com.social.media.validation.MatchPassword;
 import com.social.media.validation.UniqueEmail;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 
 @Entity
+@MatchPassword
 public class Person extends ParentEntity {
 
     @Column
@@ -39,6 +38,11 @@ public class Person extends ParentEntity {
     @Getter
     @Setter
     private String password;
+
+    @Transient
+    @Getter
+    @Setter
+    private String rawPassword;
 
     @Column
     @Enumerated(EnumType.STRING)
