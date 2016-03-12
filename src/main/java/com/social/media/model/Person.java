@@ -32,7 +32,7 @@ public class Person extends ParentEntity {
     private String surname;
 
     @Email
-    @Column
+    @Column(unique = true)
     @Getter
     @Setter
     @UniqueEmail

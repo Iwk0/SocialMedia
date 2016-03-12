@@ -2,6 +2,7 @@ package com.social.media.controller;
 
 import com.social.media.model.Person;
 import com.social.media.repository.PersonRepository;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.Authentication;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
+@Log4j
 @Controller
 public class PersonController {
 
@@ -24,18 +26,21 @@ public class PersonController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ModelAndView personPreview(@PathVariable("id") String id) {
+        log.info("Person preview");
         return new ModelAndView("/person/preview", "person", personRepository.findOne(Long.valueOf(id)));
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String createPerson(@Valid @ModelAttribute("person") Person person, BindingResult result) {
         if (result.hasErrors()) {
+            log.error("Cannot register person");
             return "/login";
         }
 
         ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder(256);
         person.setPassword(shaPasswordEncoder.encodePassword(person.getPassword(), ""));
         personRepository.save(person);
+        log.info("Person is registered successfully");
 
         return "redirect:/login";
     }
@@ -44,5 +49,10 @@ public class PersonController {
     public ModelAndView settings() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return new ModelAndView("/person/settings", "person", personRepository.findByEmail(auth.getName()));
+    }
+
+    @RequestMapping(value = "/settings", method = RequestMethod.POST)
+    public String newSettings(@Valid @ModelAttribute("person") Person person) {
+        return "";
     }
 }
