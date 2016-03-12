@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 
 @Log4j
+//@Slf4j
 @Controller
 public class PersonController {
 
