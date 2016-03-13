@@ -27,7 +27,7 @@ public class PersonController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ModelAndView personPreview(@PathVariable("id") String id) {
         log.info("Person preview");
-        return new ModelAndView("/person/preview", "person", personRepository.findOne(Long.valueOf(id)));
+        return new ModelAndView("/person/preview", "person", personRepository.findOne(id));
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)

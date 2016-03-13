@@ -51,15 +51,15 @@ public class Person extends ParentEntity {
     private String rawPassword;
 
     @Column
-    @Enumerated(EnumType.STRING)
     @Getter
     @Setter
+    @Enumerated(EnumType.STRING)
     private Status status = Status.ACTIVE;
 
     @Column
-    @Enumerated(value = EnumType.STRING)
     @Getter
     @Setter
+    @Enumerated(value = EnumType.STRING)
     private Role role = Role.USER;
 
     public enum Role {

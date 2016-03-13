@@ -11,4 +11,13 @@
             </New>
         </Arg>
     </New>
+    <!--<Set name="virtualHosts">
+        <Array type="java.lang.String">
+            <Item>333.444.555.666</Item>
+            <Item>127.0.0.1</Item>
+            <Item>www.blah.com</Item>
+            <Item>www.blah.net</Item>
+            <Item>www.blah.org</Item>
+        </Array>
+    </Set>-->
 </Configure>

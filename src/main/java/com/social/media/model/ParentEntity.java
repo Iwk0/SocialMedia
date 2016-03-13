@@ -3,6 +3,7 @@ package com.social.media.model;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,10 +14,12 @@ import java.util.Date;
 public class ParentEntity implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @Column(columnDefinition = "CHAR(32)")
     @Getter
     @Setter
-    private Long id;
+    private String id;
 
     @Column
     @Getter

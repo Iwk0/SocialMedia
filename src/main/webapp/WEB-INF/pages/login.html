@@ -1,61 +1,128 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <script src="/jquery" th:src="@{/resources/js/jquery-1.12.1.min.js}"></script>
+
+        <link rel="stylesheet" type="text/css" href="main.css" th:href="@{/resources/css/main.css}"/>
+        <link rel="stylesheet" type="text/css" href="boostrap.css" th:href="@{/resources/css/bootstrap.min.css}"/>
+
+        <script th:src="@{/resources/js/bootstrap.min.js}"></script>
+
+        <script type="text/javascript">
+            $(function () {
+                function validateEmail(email) {
+                    var re = /^(([^()\[\]\\.,;:\s@"]+(\.[^()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    return re.test(email);
+                }
+
+                $("#confirmed_password").on("blur", function () {
+                    var parent = $(this).parent();
+
+                    if ($("#password").val().trim() !== $(this).val().trim()) {
+                        parent.addClass("has-error has-feedback");
+                        parent.append('<span class="glyphicon glyphicon-remove form-control-feedback" />');
+                    } else {
+                        parent.removeClass("has-error has-feedback");
+                        parent.find("span").remove();
+                    }
+                });
+
+                $("#email_registration").on("blur", function () {
+                    var parent = $(this).parent();
+                    if (!validateEmail($(this).val())) {
+                        parent.addClass("has-error has-feedback");
+                        parent.append('<span class="glyphicon glyphicon-remove form-control-feedback" />');
+                    } else {
+                        parent.removeClass("has-error has-feedback");
+                        parent.find("span").remove();
+                    }
+                });
+            });
+        </script>
+    </head>
     <body onload="document.login.email.focus();">
-        <div class="container">
-            <h2 th:text="#{label.title}">Title</h2>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-4">
+                    <h2 th:text="#{label.title}">Title</h2>
 
-            <form role="form" name="login" th:action="@{/j_spring_security_check}" method="post">
-                <div class="form-group">
-                    <label for="email" th:text="#{label.username}">Username:</label>
-                    <input type="text" name="email" class="form-control" id="email"/>
+                    <form role="form" name="login" th:action="@{/j_spring_security_check}" method="post">
+                        <div class="form-group">
+                            <label for="email" th:text="#{label.username}">Username:</label>
+                            <input type="text" name="email" class="form-control" id="email"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="pwd" th:text="#{label.password}">Password:</label>
+                            <input type="password" name="password" class="form-control" id="pwd"/>
+                        </div>
+                        <div th:if="${error} ne null" class="form-group">
+                            <span th:text="#{error.incorrect.password}"
+                                  class="label label-danger">Incorrect password</span>
+                        </div>
+                        <input type="submit" th:value="#{button.login}" value="Login" class="btn btn-default"/>
+                    </form>
                 </div>
-                <div>
-                    <label for="pwd" th:text="#{label.password}">Password:</label>
-                    <input type="password" name="password" class="form-control" id="pwd"/>
-                </div>
-                <div th:if="${error} ne null" class="form-group">
-                    <span th:text="#{error.incorrect.password}" class="label label-danger">Incorrect password</span>
-                </div>
-                <input type="submit" th:value="#{button.login}" value="Login" class="btn btn-default"/>
-            </form>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <h2 th:text="#{label.registration}">Title</h2>
 
-            <h2 th:text="#{label.registration}">Title</h2>
-            <form role="form" id="employeeForm" th:object="${person}" th:action="@{/new}" method="post">
-                <div class="form-group">
-                    <label for="firstName" th:text="#{label.firstName}">...</label>
-                    <input type="text" class="form-control" id="firstName" th:field="*{firstName}" placeholder="Име"/>
-                    <label th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Name Error</label>
+                    <form role="form" id="employeeForm" th:object="${person}" th:action="@{/new}" method="post">
+                        <div class="form-group">
+                            <label for="firstName" th:text="#{label.firstName}">...</label>
+                            <input type="text" class="form-control" id="firstName" th:field="*{firstName}"
+                                   placeholder="Име"/>
+
+                            <h3 class="label label-danger" th:if="${#fields.hasErrors('firstName')}"
+                                th:errors="*{firstName}">Name Error</h3>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName" th:text="#{label.lastName}">...</label>
+                            <input type="text" class="form-control" id="lastName" th:field="*{lastName}"
+                                   placeholder="Фамилия"/>
+
+                            <h3 class="label label-danger" th:if="${#fields.hasErrors('lastName')}"
+                                th:errors="*{lastName}">Name Error</h3>
+                        </div>
+                        <div class="form-group">
+                            <label for="egn" th:text="#{label.surname}">...</label>
+                            <input type="text" class="form-control" id="egn" th:field="*{surname}"
+                                   placeholder="Презиме"/>
+
+                            <h3 class="label label-danger" th:if="${#fields.hasErrors('surname')}"
+                                th:errors="*{surname}">Name Error</h3>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" th:text="#{label.password}">...</label>
+                            <input type="password" class="form-control" id="password" th:field="*{password}"
+                                   placeholder="Парола"/>
+
+                            <h3 class="label label-danger" th:if="${#fields.hasErrors('password')}"
+                                th:errors="*{password}">Name Error</h3>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmed_password" th:text="#{label.confirmed.password}">...</label>
+                            <input type="password" class="form-control" id="confirmed_password"
+                                   th:field="*{rawPassword}"
+                                   placeholder="Потвърди парола"/>
+
+                            <h3 class="label label-danger" th:if="${#fields.hasErrors('rawPassword')}"
+                                th:errors="*{rawPassword}">Name
+                                Error</h3>
+                        </div>
+                        <div class="form-group">
+                            <label for="email_registration" th:text="#{label.email}">...</label>
+                            <input type="text" class="form-control" id="email_registration" th:field="*{email}"
+                                   placeholder="Емайл"/>
+
+                            <h3 class="label label-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                                Name Error</h3>
+                        </div>
+                        <input type="submit" class="btn btn-default" id="registration"
+                               th:value="#{button.registration}"/>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label for="lastName" th:text="#{label.lastName}">...</label>
-                    <input type="text" class="form-control" id="lastName" th:field="*{lastName}" placeholder="Фамилия"/>
-                    <label th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Name Error</label>
-                </div>
-                <div class="form-group">
-                    <label for="egn" th:text="#{label.surname}">...</label>
-                    <input type="text" class="form-control" id="egn" th:field="*{surname}" placeholder="Презиме"/>
-                    <label th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Name Error</label>
-                </div>
-                <div class="form-group">
-                    <label for="password" th:text="#{label.password}">...</label>
-                    <input type="password" class="form-control" id="password" th:field="*{password}"
-                           placeholder="Парола"/>
-                    <label th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name Error</label>
-                </div>
-                <div class="form-group">
-                    <label for="confirmed_password" th:text="#{label.confirmed.password}">...</label>
-                    <input type="password" class="form-control" id="confirmed_password" th:field="*{rawPassword}"
-                           placeholder="Потвърди парола"/>
-                    <label th:if="${#fields.hasErrors('rawPassword')}" th:errors="*{rawPassword}">Name Error</label>
-                </div>
-                <div class="form-group">
-                    <label for="email_registration" th:text="#{label.email}">...</label>
-                    <input type="text" class="form-control" id="email_registration" th:field="*{email}"
-                           placeholder="Емайл"/>
-                    <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Name Error</label>
-                </div>
-                <input type="submit" class="btn btn-default" id="registration" th:value="#{button.registration}"/>
-            </form>
+            </div>
         </div>
     </body>
 </html>

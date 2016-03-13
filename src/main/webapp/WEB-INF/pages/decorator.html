@@ -6,16 +6,44 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>Social Media</title>
         <script src="/jquery" th:src="@{/resources/js/jquery-1.12.1.min.js}"></script>
+
+        <!--Bootstrap-->
+        <link rel="stylesheet" type="text/css" href="main.css" th:href="@{/resources/css/main.css}"/>
+        <link rel="stylesheet" type="text/css" href="boostrap.css" th:href="@{/resources/css/bootstrap.min.css}"/>
+
+        <script th:src="@{/resources/js/bootstrap.min.js}"></script>
+
+        <script>
+            $(function () {
+                $("#logout").on("click", function () {
+                    $("#logoutForm").submit();
+                });
+            });
+        </script>
     </head>
     <body>
-        <h1>Social Media</h1>
-        <a href="javascript:logout();">Logout</a>
         <form th:action="@{/logout}" id="logoutForm" method="post"></form>
-        <script>
-            function logout() {
-                document.getElementById("logoutForm").submit();
-            }
-        </script>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#" th:href="@{/}">SocialMedia</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Page 1</a></li>
+                    <li th:object="${person}">
+                        <a href="#" th:href="@{/{id}(id=*{id})}">
+                            <div th:text="*{firstName + ' ' + lastName}">
+                                The value of the "name" property of the authentication object should appear here.
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <button class="btn btn-default" id="logout">Logout</button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
         <div th:include="this :: content"></div>
     </body>
 </html>
