@@ -24,8 +24,10 @@ public class VersionAddingHandlerInterceptor extends HandlerInterceptorAdapter {
                            final HttpServletResponse response, final Object handler,
                            final ModelAndView modelAndView) throws Exception {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        modelAndView.getModelMap().
-                addAttribute(VERSION_MODEL_ATTRIBUTE_NAME,
-                        personRepository.findByEmail(auth.getName()));
+        if (modelAndView != null) {
+            modelAndView.getModelMap().
+                    addAttribute(VERSION_MODEL_ATTRIBUTE_NAME,
+                            personRepository.findByEmail(auth.getName()));
+        }
     }
 }

@@ -54,12 +54,13 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/addFriend", method = RequestMethod.POST)
+    @ResponseBody
     public String addFriend(@RequestParam(value = "id") String id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Person person = personRepository.findByEmail(auth.getName());
         person.addFriend(personRepository.findOne(id));
         personRepository.save(person);
 
-        return "redirect:/";
+        return "SUCCESS";
     }
 }

@@ -16,17 +16,23 @@
             <script>
                 $(function () {
                     $("#addFriend").on("click", function () {
+                        var thisButton = $(this);
                         $.ajax({
                             url: '/addFriend',
                             type: 'POST',
                             data: {
                                 id: $("#personId").val()
                             },
-                            dataType: 'json',
+                            dataType: 'text',
                             beforeSend: function (xhr) {
                                 var token = $("meta[name='_csrf']").attr("content");
                                 var header = $("meta[name='_csrf_header']").attr("content");
                                 xhr.setRequestHeader(header, token);
+                            },
+                            success: function (data) {
+                                if (data === "SUCCESS") {
+                                    thisButton.remove();
+                                }
                             }
                         });
                     });
