@@ -52,7 +52,7 @@ public class Person extends ParentEntity {
     @Size(min = 6, max = 36)
     private String rawPassword;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Getter
     @Setter
     private Set<Person> friends;

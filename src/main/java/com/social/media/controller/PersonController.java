@@ -21,11 +21,6 @@ public class PersonController {
     @Autowired
     private PersonRepository personRepository;
 
-    @RequestMapping(value = "favicon.ico")
-    @ResponseBody
-    public void favicon() {
-    }
-
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ModelAndView preview(@PathVariable("id") String id) {
         log.info("Person preview id = " + id);
@@ -59,8 +54,12 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/addFriend", method = RequestMethod.POST)
-    public String addFriend(@RequestParam(value = "id") String id/*, @RequestParam(value = "friendId") String friendId*/) {
+    public String addFriend(@RequestParam(value = "id") String id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Person person = personRepository.findByEmail(auth.getName());
+        person.addFriend(personRepository.findOne(id));
+        personRepository.save(person);
 
-        return "";
+        return "redirect:/";
     }
 }
