@@ -2,14 +2,12 @@ package com.social.media.controller;
 
 import com.social.media.model.Person;
 import com.social.media.repository.PersonRepository;
-import com.social.media.util.VersionAddingHandlerInterceptor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -61,8 +59,8 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/addFriend", method = RequestMethod.POST)
-    public String addFriend(@RequestParam(value = "id") String id,/* @RequestParam(value = "friendId") String friendId*/ModelMap model) {
-        Object s = model.get(VersionAddingHandlerInterceptor.VERSION_MODEL_ATTRIBUTE_NAME);
+    public String addFriend(@RequestParam(value = "id") String id/*, @RequestParam(value = "friendId") String friendId*/) {
+
         return "";
     }
 }
