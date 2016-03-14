@@ -21,6 +21,15 @@ public class PersonController {
     @Autowired
     private PersonRepository personRepository;
 
+    @ModelAttribute(value = "mainAccount")
+    public Person mainAccount() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null) {
+            return new Person();
+        }
+        return personRepository.findByEmail(auth.getName());
+    }
+
     @RequestMapping(value = "favicon.ico")
     @ResponseBody
     public void favicon() {
@@ -55,6 +64,12 @@ public class PersonController {
 
     @RequestMapping(value = "/settings", method = RequestMethod.POST)
     public String newSettings(@Valid @ModelAttribute("person") Person person) {
+        return "";
+    }
+
+    @RequestMapping(value = "/addFriend", method = RequestMethod.POST)
+    public String addFriend(@RequestParam(value = "id") String id) {
+
         return "";
     }
 }

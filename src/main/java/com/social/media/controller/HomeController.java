@@ -35,6 +35,6 @@ public class HomeController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView home() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return new ModelAndView("/index", "person", personRepository.findByEmail(auth.getName()));
+        return new ModelAndView("/index", "mainAccount", personRepository.findByEmail(auth.getName()));
     }
 }

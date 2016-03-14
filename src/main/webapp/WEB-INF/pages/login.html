@@ -3,7 +3,6 @@
     <head>
         <script src="/jquery" th:src="@{/resources/js/jquery-1.12.1.min.js}"></script>
 
-        <link rel="stylesheet" type="text/css" href="main.css" th:href="@{/resources/css/main.css}"/>
         <link rel="stylesheet" type="text/css" href="boostrap.css" th:href="@{/resources/css/bootstrap.min.css}"/>
 
         <script th:src="@{/resources/js/bootstrap.min.js}"></script>
@@ -42,6 +41,7 @@
     </head>
     <body onload="document.login.email.focus();">
         <div class="container-fluid">
+            <h1>Facebook</h1>
             <div class="row">
                 <div class="col-sm-4">
                     <h2 th:text="#{label.title}">Title</h2>

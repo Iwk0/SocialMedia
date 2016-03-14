@@ -8,6 +8,8 @@ import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @MatchPassword
@@ -50,6 +52,11 @@ public class Person extends ParentEntity {
     @Size(min = 6, max = 36)
     private String rawPassword;
 
+    @ManyToMany
+    @Getter
+    @Setter
+    private Set<Person> friends;
+
     @Column
     @Getter
     @Setter
@@ -61,6 +68,14 @@ public class Person extends ParentEntity {
     @Setter
     @Enumerated(value = EnumType.STRING)
     private Role role = Role.USER;
+
+    public void addFriend(Person person) {
+        if (friends == null) {
+            friends = new HashSet<>();
+        }
+
+        friends.add(person);
+    }
 
     public enum Role {
         ANONYMOUS, ADMIN, USER

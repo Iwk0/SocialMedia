@@ -9,7 +9,29 @@
                 <p>Last name: <label th:text="*{lastName}">...</label></p>
                 <p>Surname: <label th:text="*{surname}">...</label></p>
                 <p>Email: <label th:text="*{email}">...</label></p>
+                <input type="hidden" value="1" id="personId" th:value="*{id}"/>
+                <button class="btn btn-default" id="addFriend" th:if="${#authentication.name} ne *{email}">Add friend
+                </button>
             </div>
+            <script>
+                $(function () {
+                    $("#addFriend").on("click", function () {
+                        $.ajax({
+                            url: '/addFriend',
+                            type: 'POST',
+                            data: {
+                                id: $("#personId").val()
+                            },
+                            dataType: 'json',
+                            beforeSend: function (xhr) {
+                                var token = $("meta[name='_csrf']").attr("content");
+                                var header = $("meta[name='_csrf_header']").attr("content");
+                                xhr.setRequestHeader(header, token);
+                            }
+                        });
+                    });
+                });
+            </script>
         </div>
     </body>
 </html>
