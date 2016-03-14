@@ -2,12 +2,14 @@ package com.social.media.controller;
 
 import com.social.media.model.Person;
 import com.social.media.repository.PersonRepository;
+import com.social.media.util.VersionAddingHandlerInterceptor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,28 +23,19 @@ public class PersonController {
     @Autowired
     private PersonRepository personRepository;
 
-    @ModelAttribute(value = "mainAccount")
-    public Person mainAccount() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) {
-            return new Person();
-        }
-        return personRepository.findByEmail(auth.getName());
-    }
-
     @RequestMapping(value = "favicon.ico")
     @ResponseBody
     public void favicon() {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ModelAndView personPreview(@PathVariable("id") String id) {
+    public ModelAndView preview(@PathVariable("id") String id) {
         log.info("Person preview id = " + id);
         return new ModelAndView("/person/preview", "person", personRepository.findOne(id));
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public String createPerson(@Valid @ModelAttribute("person") Person person, BindingResult result) {
+    public String create(@Valid @ModelAttribute("person") Person person, BindingResult result) {
         if (result.hasErrors()) {
             log.error("Cannot register person");
             return "/login";
@@ -68,8 +61,8 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/addFriend", method = RequestMethod.POST)
-    public String addFriend(@RequestParam(value = "id") String id) {
-
+    public String addFriend(@RequestParam(value = "id") String id,/* @RequestParam(value = "friendId") String friendId*/ModelMap model) {
+        Object s = model.get(VersionAddingHandlerInterceptor.VERSION_MODEL_ATTRIBUTE_NAME);
         return "";
     }
 }

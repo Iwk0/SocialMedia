@@ -24,9 +24,6 @@
         </script>
     </head>
     <body>
-        <div th:each="person : ${persons}">
-            <span th:text="${person.surname}"></span>
-        </div>
         <form th:action="@{/logout}" id="logoutForm" method="post"></form>
         <nav class="navbar navbar-default">
             <div class="container-fluid">

@@ -20,7 +20,9 @@
         <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
             <property name="paramName" value="lang"/>
         </bean>
-        <bean class="com.social.media.util.VersionAddingHandlerInterceptor" autowire="constructor"/>
+        <bean class="com.social.media.util.VersionAddingHandlerInterceptor">
+            <constructor-arg type="com.social.media.repository.PersonRepository" ref="personRepository"/>
+        </bean>
     </mvc:interceptors>
     <mvc:resources mapping="/resources/**" location="/resources/"/>
 

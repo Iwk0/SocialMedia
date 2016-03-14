@@ -1,6 +1,8 @@
 package com.social.media.util;
 
 import com.social.media.repository.PersonRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -9,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class VersionAddingHandlerInterceptor extends HandlerInterceptorAdapter {
 
-    public static final String VERSION_MODEL_ATTRIBUTE_NAME = "persons";
+    public static final String VERSION_MODEL_ATTRIBUTE_NAME = "mainAccount";
 
     private PersonRepository personRepository;
 
@@ -22,9 +24,10 @@ public class VersionAddingHandlerInterceptor extends HandlerInterceptorAdapter {
                            final HttpServletResponse response, final Object handler,
                            final ModelAndView modelAndView) throws Exception {
         if (modelAndView != null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             modelAndView.getModelMap().
                     addAttribute(VERSION_MODEL_ATTRIBUTE_NAME,
-                            personRepository.findAll());
+                            personRepository.findByEmail(auth.getName()));
         }
     }
 }
