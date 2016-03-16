@@ -54,7 +54,7 @@ public class Person extends ParentEntity {
 
     @Getter
     @Setter
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(joinColumns = {@JoinColumn(name = "personId")}, inverseJoinColumns = {@JoinColumn(name = "friendId")})
     private Set<Person> friends;
 

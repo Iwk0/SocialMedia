@@ -21,6 +21,9 @@
                 <button class="btn btn-default" id="addFriend" th:if="${#authentication.name} ne *{email}">Add friend
                 </button>
             </div>
+            <a href="#" th:each="friend : ${friends}"
+               th:href="@{/{id}(id=${friend.id})}"
+               th:text="${friend.firstName + ' ' + friend.lastName}"></a>
             <script>
                 $(function () {
                     $("#addFriend").on("click", function () {
