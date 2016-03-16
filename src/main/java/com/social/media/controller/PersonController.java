@@ -8,6 +8,7 @@ import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -56,11 +57,15 @@ public class PersonController {
     @RequestMapping(value = "/addFriend", method = RequestMethod.POST)
     @ResponseBody
     public String addFriend(@RequestParam(value = "id") String id) {
+        savePerson(id);
+        return "SUCCESS";
+    }
+
+    @Transactional
+    private void savePerson(String id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Person person = personRepository.findByEmail(auth.getName());
         person.addFriend(personRepository.findOne(id));
         personRepository.save(person);
-
-        return "SUCCESS";
     }
 }

@@ -52,9 +52,10 @@ public class Person extends ParentEntity {
     @Size(min = 6, max = 36)
     private String rawPassword;
 
-    @ManyToMany(fetch = FetchType.EAGER)
     @Getter
     @Setter
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(joinColumns = {@JoinColumn(name = "personId")}, inverseJoinColumns = {@JoinColumn(name = "friendId")})
     private Set<Person> friends;
 
     @Column

@@ -20,9 +20,9 @@ public class VersionAddingHandlerInterceptor extends HandlerInterceptorAdapter {
     }
 
     @Override
-    public void postHandle(final HttpServletRequest request,
-                           final HttpServletResponse response, final Object handler,
-                           final ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request,
+                           HttpServletResponse response, Object handler,
+                           ModelAndView modelAndView) throws Exception {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (modelAndView != null) {
             modelAndView.getModelMap().
