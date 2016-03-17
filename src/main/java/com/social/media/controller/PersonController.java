@@ -1,14 +1,12 @@
 package com.social.media.controller;
 
 import com.social.media.model.Person;
-import com.social.media.repository.PersonRepository;
+import com.social.media.service.PersonService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,12 +18,13 @@ import javax.validation.Valid;
 public class PersonController {
 
     @Autowired
-    private PersonRepository personRepository;
+    @Qualifier(value = "personService")
+    private PersonService personService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ModelAndView preview(@PathVariable("id") String id) {
         log.info("Person preview id = " + id);
-        return new ModelAndView("/person/preview", "person", personRepository.findOne(id));
+        return new ModelAndView("/person/preview", "person", personService.findOne(id));
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
@@ -37,7 +36,7 @@ public class PersonController {
 
         ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder(256);
         person.setPassword(shaPasswordEncoder.encodePassword(person.getPassword(), ""));
-        personRepository.save(person);
+        personService.save(person);
         log.info("Person is registered successfully");
 
         return "redirect:/login";
@@ -45,8 +44,7 @@ public class PersonController {
 
     @RequestMapping(value = "/settings", method = RequestMethod.GET)
     public ModelAndView settings() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return new ModelAndView("/person/settings", "person", personRepository.findByEmail(auth.getName()));
+        return new ModelAndView("/person/settings", "person", personService.findByEmail());
     }
 
     @RequestMapping(value = "/settings", method = RequestMethod.POST)
@@ -57,15 +55,7 @@ public class PersonController {
     @RequestMapping(value = "/addFriend", method = RequestMethod.POST)
     @ResponseBody
     public String addFriend(@RequestParam(value = "id") String id) {
-        savePerson(id);
+        personService.addFriend(id);
         return "SUCCESS";
-    }
-
-    @Transactional
-    private void savePerson(String id) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Person person = personRepository.findByEmail(auth.getName());
-        person.addFriend(personRepository.findOne(id));
-        personRepository.save(person);
     }
 }

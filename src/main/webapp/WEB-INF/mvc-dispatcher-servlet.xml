@@ -13,7 +13,7 @@
 
     <context:annotation-config/>
     <context:component-scan base-package="com.social.media.controller"/>
-    <!--<context:component-scan base-package="com.social.media.service"/>-->
+    <context:component-scan base-package="com.social.media.service"/>
 
     <mvc:annotation-driven/>
     <mvc:interceptors>
