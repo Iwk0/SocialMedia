@@ -58,6 +58,11 @@ public class Person extends ParentEntity {
     @JoinTable(joinColumns = {@JoinColumn(name = "personId")}, inverseJoinColumns = {@JoinColumn(name = "friendId")})
     private Set<Person> friends;
 
+    @Getter
+    @Setter
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
+    private Set<Picture> pictures;
+
     @Column
     @Getter
     @Setter
@@ -76,6 +81,14 @@ public class Person extends ParentEntity {
         }
 
         friends.add(person);
+    }
+
+    public void addPicture(Picture picture) {
+        if (pictures == null) {
+            pictures = new HashSet<>();
+        }
+
+        pictures.add(picture);
     }
 
     public enum Role {

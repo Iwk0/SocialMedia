@@ -5,6 +5,7 @@
     <body>
         <div th:fragment="content">
             <div th:object="${person}">
+                <img src="#" th:src="@{/picture}" style="float: left" width="200px" height="200px"/>
                 <p>
                     <th:block th:text="#{label.firstName}"/>
                     : <label th:text="*{firstName}">...</label></p>
@@ -21,6 +22,7 @@
                 <button class="btn btn-default" id="addFriend" th:if="${#authentication.name} ne *{email}">Add friend
                 </button>
             </div>
+            <div style="clear: both"></div>
             <a href="#" th:each="friend : ${friends}"
                th:href="@{/{id}(id=${friend.id})}"
                th:text="${friend.firstName + ' ' + friend.lastName}"></a>

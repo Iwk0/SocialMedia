@@ -1,7 +1,32 @@
 package com.social.media.model;
 
-/**
- * Created by imishev on 17.3.2016 г..
- */
-public class Picture {
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+
+@Entity
+public class Picture extends ParentEntity {
+
+    @Column
+    @Getter
+    @Setter
+    private String name;
+
+    @Lob
+    @Column
+    @Getter
+    @Setter
+    private byte[] image;
+
+    @Column
+    @Getter
+    @Setter
+    private String description;
+
+    @Getter
+    @Setter
+    @JoinColumn(name = "pictureId")
+    @ManyToOne
+    private Person person;
 }

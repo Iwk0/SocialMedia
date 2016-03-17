@@ -1,18 +1,25 @@
 package com.social.media.controller;
 
 import com.social.media.model.Person;
+import com.social.media.model.Picture;
 import com.social.media.service.PersonService;
 import lombok.extern.log4j.Log4j;
-import org.hibernate.Hibernate;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Log4j
 @Controller
@@ -24,10 +31,11 @@ public class PersonController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ModelAndView preview(@PathVariable("id") String id) {
-        ModelAndView modelAndView = new ModelAndView("/person/preview", "person", personRepository.findOne(id));
         log.info("Person preview id = " + id);
-        return new ModelAndView("/person/preview", "person", personService.findOne(id));
-        modelAndView.addObject("friends", personRepository.findAllFriends(id));
+
+        ModelAndView modelAndView = new ModelAndView("/person/preview", "person", personService.findOne(id));
+        modelAndView.addObject("friends", personService.findAllFriends(id));
+
         return modelAndView;
     }
 
@@ -41,6 +49,7 @@ public class PersonController {
         ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder(256);
         person.setPassword(shaPasswordEncoder.encodePassword(person.getPassword(), ""));
         personService.save(person);
+
         log.info("Person is registered successfully");
 
         return "redirect:/login";
@@ -48,7 +57,9 @@ public class PersonController {
 
     @RequestMapping(value = "/settings", method = RequestMethod.GET)
     public ModelAndView settings() {
-        return new ModelAndView("/person/settings", "person", personService.findByEmail());
+        ModelAndView modelAndView = new ModelAndView("/person/settings", "person", personService.findByEmail());
+        modelAndView.addObject("picture", new Picture());
+        return modelAndView;
     }
 
     @RequestMapping(value = "/settings", method = RequestMethod.POST)
@@ -63,11 +74,24 @@ public class PersonController {
         return "SUCCESS";
     }
 
-    private void savePerson(String id) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Person person = personRepository.findByEmail(auth.getName());
-        Hibernate.initialize(person.getFriends());
-        person.addFriend(personRepository.findOne(id));
-        personRepository.save(person);
+    @RequestMapping("/picture")
+    public ResponseEntity<byte[]> getImage() throws IOException {
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+
+        return new ResponseEntity<>(IOUtils.toByteArray(personService.getPicture()), headers, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
+    public String uploadImage(@ModelAttribute(value = "picture") Picture picture,
+                              @RequestParam("file") MultipartFile file) {
+        try {
+            picture.setImage(file.getBytes());
+            personService.addPicture(picture);
+        } catch (IOException e) {
+            log.error("IOException", e);
+        }
+
+        return "redirect:/settings";
     }
 }
