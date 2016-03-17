@@ -6,7 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-public class Picture extends ParentEntity {
+public class Photo extends ParentEntity {
 
     @Column
     @Getter
@@ -26,7 +26,18 @@ public class Picture extends ParentEntity {
 
     @Getter
     @Setter
-    @JoinColumn(name = "pictureId")
+    @JoinColumn(name = "personId")
     @ManyToOne
     private Person person;
+
+    @Getter
+    @Setter
+    @JoinColumn(name = "albumId")
+    @ManyToOne
+    private Album album;
+
+    @Getter
+    @Setter
+    @Column(nullable = false)
+    private boolean isProfilePicture = false;
 }

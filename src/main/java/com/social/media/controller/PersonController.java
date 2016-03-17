@@ -1,7 +1,7 @@
 package com.social.media.controller;
 
 import com.social.media.model.Person;
-import com.social.media.model.Picture;
+import com.social.media.model.Photo;
 import com.social.media.service.PersonService;
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.io.IOUtils;
@@ -58,7 +58,7 @@ public class PersonController {
     @RequestMapping(value = "/settings", method = RequestMethod.GET)
     public ModelAndView settings() {
         ModelAndView modelAndView = new ModelAndView("/person/settings", "person", personService.findByEmail());
-        modelAndView.addObject("picture", new Picture());
+        modelAndView.addObject("picture", new Photo());
         return modelAndView;
     }
 
@@ -76,18 +76,18 @@ public class PersonController {
 
     @RequestMapping("/picture")
     public ResponseEntity<byte[]> getImage() throws IOException {
-        final HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
 
-        return new ResponseEntity<>(IOUtils.toByteArray(personService.getPicture()), headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(IOUtils.toByteArray(personService.getPhoto()), headers, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
-    public String uploadImage(@ModelAttribute(value = "picture") Picture picture,
+    public String uploadImage(@ModelAttribute(value = "picture") Photo photo,
                               @RequestParam("file") MultipartFile file) {
         try {
-            picture.setImage(file.getBytes());
-            personService.addPicture(picture);
+            photo.setImage(file.getBytes());
+            personService.addPhoto(photo);
         } catch (IOException e) {
             log.error("IOException", e);
         }

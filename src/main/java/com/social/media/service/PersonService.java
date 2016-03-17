@@ -1,9 +1,9 @@
 package com.social.media.service;
 
+import com.social.media.model.Album;
 import com.social.media.model.Person;
-import com.social.media.model.Picture;
+import com.social.media.model.Photo;
 import com.social.media.repository.PersonRepository;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,27 +24,24 @@ public class PersonService {
     public void addFriend(String id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Person person = personRepository.findByEmail(auth.getName());
-        Hibernate.initialize(person.getFriends());
         person.addFriend(personRepository.findOne(id));
         personRepository.save(person);
     }
 
     @Transactional(readOnly = false)
-    public void addPicture(Picture picture) {
+    public void addPhoto(Photo photo) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Person person = personRepository.findByEmail(auth.getName());
-        Hibernate.initialize(person.getPictures());
-        picture.setPerson(person);
-        person.addPicture(picture);
+        photo.setPerson(person);
+        person.addPhoto(photo);
         personRepository.save(person);
     }
 
-    @Transactional(readOnly = true)
-    public InputStream getPicture() {
+    public InputStream getPhoto() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Person person = personRepository.findByEmail(auth.getName());
-        Set<Picture> pictures = personRepository.findAllPictures(person.getId());
-        Picture pic = pictures.iterator().next();
+        Set<Photo> photos = personRepository.findAllPhotos(person.getId());
+        Photo pic = photos.iterator().next();
         return new ByteArrayInputStream(pic.getImage());
     }
 
@@ -67,5 +64,22 @@ public class PersonService {
     @Transactional(readOnly = true)
     public Set<Person> findAllFriends(String id) {
         return personRepository.findAllFriends(id);
+    }
+
+    public String addAlbum() {
+        Person person = new Person();
+        Album album = new Album();
+        album.setName("Name");
+        album.setPerson(person);
+        person.addAlbum(album);
+
+        Photo photo = new Photo();
+        photo.setPerson(person);
+        photo.setName("Name");
+        photo.setDescription("des");
+        photo.setImage(null);
+
+        album.addPhoto(photo);
+        return "";
     }
 }

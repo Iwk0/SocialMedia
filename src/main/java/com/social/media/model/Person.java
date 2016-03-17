@@ -61,7 +61,12 @@ public class Person extends ParentEntity {
     @Getter
     @Setter
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
-    private Set<Picture> pictures;
+    private Set<Photo> photos;
+
+    @Getter
+    @Setter
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
+    private Set<Album> albums;
 
     @Column
     @Getter
@@ -83,12 +88,20 @@ public class Person extends ParentEntity {
         friends.add(person);
     }
 
-    public void addPicture(Picture picture) {
-        if (pictures == null) {
-            pictures = new HashSet<>();
+    public void addPhoto(Photo picture) {
+        if (photos == null) {
+            photos = new HashSet<>();
         }
 
-        pictures.add(picture);
+        photos.add(picture);
+    }
+
+    public void addAlbum(Album album) {
+        if (albums == null) {
+            albums = new HashSet<>();
+        }
+
+        albums.add(album);
     }
 
     public enum Role {
