@@ -3,6 +3,7 @@ package com.social.media.controller;
 import com.social.media.model.Person;
 import com.social.media.service.PersonService;
 import lombok.extern.log4j.Log4j;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
@@ -23,8 +24,11 @@ public class PersonController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ModelAndView preview(@PathVariable("id") String id) {
+        ModelAndView modelAndView = new ModelAndView("/person/preview", "person", personRepository.findOne(id));
         log.info("Person preview id = " + id);
         return new ModelAndView("/person/preview", "person", personService.findOne(id));
+        modelAndView.addObject("friends", personRepository.findAllFriends(id));
+        return modelAndView;
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
@@ -57,5 +61,13 @@ public class PersonController {
     public String addFriend(@RequestParam(value = "id") String id) {
         personService.addFriend(id);
         return "SUCCESS";
+    }
+
+    private void savePerson(String id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Person person = personRepository.findByEmail(auth.getName());
+        Hibernate.initialize(person.getFriends());
+        person.addFriend(personRepository.findOne(id));
+        personRepository.save(person);
     }
 }
