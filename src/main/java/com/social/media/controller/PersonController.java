@@ -1,7 +1,6 @@
 package com.social.media.controller;
 
 import com.social.media.model.Person;
-import com.social.media.model.Photo;
 import com.social.media.service.PersonService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,18 +45,6 @@ public class PersonController {
         log.info("Person is registered successfully");
 
         return "redirect:/login";
-    }
-
-    @RequestMapping(value = "/settings", method = RequestMethod.GET)
-    public ModelAndView settings() {
-        ModelAndView modelAndView = new ModelAndView("/person/settings", "person", personService.findByEmail());
-        modelAndView.addObject("picture", new Photo());
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/settings", method = RequestMethod.POST)
-    public String newSettings(@Valid @ModelAttribute("person") Person person) {
-        return "";
     }
 
     @RequestMapping(value = "/addFriend", method = RequestMethod.POST)
