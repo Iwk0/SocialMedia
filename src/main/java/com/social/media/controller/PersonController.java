@@ -4,22 +4,15 @@ import com.social.media.model.Person;
 import com.social.media.model.Photo;
 import com.social.media.service.PersonService;
 import lombok.extern.log4j.Log4j;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.io.IOException;
 
 @Log4j
 @Controller
@@ -72,26 +65,5 @@ public class PersonController {
     public String addFriend(@RequestParam(value = "id") String id) {
         personService.addFriend(id);
         return "SUCCESS";
-    }
-
-    @RequestMapping("/picture")
-    public ResponseEntity<byte[]> getImage() throws IOException {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_PNG);
-
-        return new ResponseEntity<>(IOUtils.toByteArray(personService.getPhoto()), headers, HttpStatus.CREATED);
-    }
-
-    @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
-    public String uploadImage(@ModelAttribute(value = "picture") Photo photo,
-                              @RequestParam("file") MultipartFile file) {
-        try {
-            photo.setImage(file.getBytes());
-            personService.addPhoto(photo);
-        } catch (IOException e) {
-            log.error("IOException", e);
-        }
-
-        return "redirect:/settings";
     }
 }
