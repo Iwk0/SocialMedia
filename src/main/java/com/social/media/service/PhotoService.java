@@ -8,5 +8,5 @@ public interface PhotoService {
 
     void addPhoto(Photo photo);
 
-    InputStream getPhoto();
+    InputStream getPhoto(String id);
 }

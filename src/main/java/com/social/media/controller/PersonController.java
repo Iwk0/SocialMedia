@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Log4j
 @Controller
@@ -27,6 +32,7 @@ public class PersonController {
 
         ModelAndView modelAndView = new ModelAndView("/person/preview", "person", personService.findOne(id));
         modelAndView.addObject("friends", personService.findAllFriends(id));
+        modelAndView.addObject("addFriend", personService.findFriend(id));
 
         return modelAndView;
     }
@@ -36,6 +42,20 @@ public class PersonController {
         if (result.hasErrors()) {
             log.error("Cannot register person");
             return "/login";
+        }
+
+        try {
+            final String IMAGE_PATH = System.getProperty("user.dir") +
+                    File.separator + "src" + File.separator + "main" +
+                    File.separator + "webapp" + File.separator + "resources" +
+                    File.separator + "images" + File.separator + person.getGender() + ".jpg";
+
+            Path path = Paths.get(IMAGE_PATH);
+            byte[] data = Files.readAllBytes(path);
+
+            person.setProfilePicture(data);
+        } catch (IOException e) {
+            log.error("IOException", e);
         }
 
         ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder(256);
@@ -50,7 +70,6 @@ public class PersonController {
     @RequestMapping(value = "/addFriend", method = RequestMethod.POST)
     @ResponseBody
     public String addFriend(@RequestParam(value = "id") String id) {
-        personService.addFriend(id);
-        return "SUCCESS";
+        return personService.addFriend(id);
     }
 }

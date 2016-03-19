@@ -13,4 +13,7 @@ public interface PersonRepository extends JpaRepository<Person, String> {
 
     @Query(value = "select fr from Person p join p.friends fr where p.id=:id")
     Set<Person> findAllFriends(@Param(value = "id") String id);
+
+    @Query(value = "select fr.id from Person p join p.friends fr where p.id=:id and fr.id=:frId")
+    String findSpecificFriend(@Param(value = "id") String id, @Param(value = "frId") String frId);
 }

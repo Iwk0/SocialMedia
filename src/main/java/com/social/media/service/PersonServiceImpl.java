@@ -18,11 +18,17 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     @Transactional(readOnly = false)
-    public void addFriend(String id) {
+    public String addFriend(String id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Person person = personRepository.findByEmail(auth.getName());
+
+        if (personRepository.findSpecificFriend(person.getId(), id) != null) {
+            return "FAIL";
+        }
+
         person.addFriend(personRepository.findOne(id));
         personRepository.save(person);
+        return "SUCCESS";
     }
 
     @Override
@@ -48,5 +54,12 @@ public class PersonServiceImpl implements PersonService {
     @Transactional(readOnly = true)
     public Set<Person> findAllFriends(String id) {
         return personRepository.findAllFriends(id);
+    }
+
+    @Override
+    public String findFriend(String id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Person person = personRepository.findByEmail(auth.getName());
+        return personRepository.findSpecificFriend(person.getId(), id);
     }
 }

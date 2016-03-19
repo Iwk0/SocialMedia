@@ -35,9 +35,4 @@ public class Photo extends ParentEntity {
     @JoinColumn(name = "albumId")
     @ManyToOne
     private Album album;
-
-    @Getter
-    @Setter
-    @Column(nullable = false)
-    private boolean isProfilePicture = false;
 }

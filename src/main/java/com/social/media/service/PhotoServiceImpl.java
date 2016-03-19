@@ -3,7 +3,6 @@ package com.social.media.service;
 import com.social.media.model.Person;
 import com.social.media.model.Photo;
 import com.social.media.repository.PersonRepository;
-import com.social.media.repository.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,16 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.Set;
 
 @Service(value = "photoService")
 public class PhotoServiceImpl implements PhotoService {
 
     @Autowired
     private PersonRepository personRepository;
-
-    @Autowired
-    private PhotoRepository photoRepository;
 
     @Override
     @Transactional(readOnly = false)
@@ -34,11 +29,8 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public InputStream getPhoto() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Person person = personRepository.findByEmail(auth.getName());
-        Set<Photo> photos = photoRepository.findAllPhotos(person.getId());
-        Photo pic = photos.iterator().next();
-        return new ByteArrayInputStream(pic.getImage());
+    public InputStream getPhoto(String id) {
+        Person person = personRepository.findOne(id);
+        return new ByteArrayInputStream(person.getProfilePicture());
     }
 }

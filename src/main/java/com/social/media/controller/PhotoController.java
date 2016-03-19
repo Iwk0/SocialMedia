@@ -11,10 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -27,12 +24,12 @@ public class PhotoController {
     @Qualifier(value = "photoService")
     private PhotoService photoService;
 
-    @RequestMapping("/picture")
-    public ResponseEntity<byte[]> getImage() throws IOException {
+    @RequestMapping("/picture/{id}")
+    public ResponseEntity<byte[]> getImage(@PathVariable(value = "id") String id) throws IOException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
 
-        return new ResponseEntity<>(IOUtils.toByteArray(photoService.getPhoto()), headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(IOUtils.toByteArray(photoService.getPhoto(id)), headers, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)

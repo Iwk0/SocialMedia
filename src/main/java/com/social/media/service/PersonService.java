@@ -6,7 +6,9 @@ import java.util.Set;
 
 public interface PersonService {
 
-    void addFriend(String id);
+    String addFriend(String id);
+
+    String findFriend(String id);
 
     Person findByEmail();
 

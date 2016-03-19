@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
@@ -52,10 +53,17 @@ public class Person extends ParentEntity {
     @Size(min = 6, max = 36)
     private String rawPassword;
 
+    @Lob
+    @Column
+    @Getter
+    @Setter
+    private byte[] profilePicture;
+
     @Getter
     @Setter
     @ManyToMany
     @JoinTable(joinColumns = {@JoinColumn(name = "personId")}, inverseJoinColumns = {@JoinColumn(name = "friendId")})
+    @OrderBy(value = "firstName")
     private Set<Person> friends;
 
     @Getter
@@ -80,6 +88,13 @@ public class Person extends ParentEntity {
     @Enumerated(value = EnumType.STRING)
     private Role role = Role.USER;
 
+    @Getter
+    @Setter
+    @Column
+    @NotNull
+    @Enumerated(value = EnumType.STRING)
+    private Gender gender;
+
     public void addFriend(Person person) {
         if (friends == null) {
             friends = new HashSet<>();
@@ -88,12 +103,12 @@ public class Person extends ParentEntity {
         friends.add(person);
     }
 
-    public void addPhoto(Photo picture) {
+    public void addPhoto(Photo photo) {
         if (photos == null) {
             photos = new HashSet<>();
         }
 
-        photos.add(picture);
+        photos.add(photo);
     }
 
     public void addAlbum(Album album) {
@@ -106,5 +121,9 @@ public class Person extends ParentEntity {
 
     public enum Role {
         ANONYMOUS, ADMIN, USER
+    }
+
+    public enum Gender {
+        MALE, FEMALE
     }
 }

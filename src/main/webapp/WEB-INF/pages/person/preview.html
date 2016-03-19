@@ -5,7 +5,7 @@
     <body>
         <div th:fragment="content">
             <div th:object="${person}">
-                <img src="#" th:src="@{/picture}" style="float: left" width="200px" height="200px"/>
+                <img src="#" th:src="@{/picture/{id}(id=*{id})}" style="float: left" width="200px" height="200px"/>
                 <p>
                     <th:block th:text="#{label.firstName}"/>
                     : <label th:text="*{firstName}">...</label></p>
@@ -19,7 +19,8 @@
                     <th:block th:text="#{label.email}"/>
                     : <label th:text="*{email}">...</label></p>
                 <input type="hidden" value="1" id="personId" th:value="*{id}"/>
-                <button class="btn btn-default" id="addFriend" th:if="${#authentication.name} ne *{email}">Add friend
+                <button class="btn btn-default" id="addFriend"
+                        th:if="${#authentication.name} ne *{email} and ${addFriend eq null}">Add friend
                 </button>
             </div>
             <div style="clear: both"></div>
@@ -45,6 +46,8 @@
                             success: function (data) {
                                 if (data === "SUCCESS") {
                                     thisButton.remove();
+                                } else {
+                                    console.log("CANNOT ADD");
                                 }
                             }
                         });
