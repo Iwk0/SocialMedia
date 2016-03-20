@@ -41,7 +41,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     @Transactional(readOnly = true)
     public Person findOne(String id) {
-        return personRepository.findOne(id);
+        return personRepository.findByIdOrName(id);
     }
 
     @Override

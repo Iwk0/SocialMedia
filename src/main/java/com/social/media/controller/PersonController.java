@@ -5,6 +5,8 @@ import com.social.media.service.PersonService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -17,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 
 @Log4j
 @Controller
@@ -26,7 +29,14 @@ public class PersonController {
     @Qualifier(value = "personService")
     private PersonService personService;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    private SimpMessagingTemplate template;
+
+    @Autowired
+    public PersonController(SimpMessagingTemplate template) {
+        this.template = template;
+    }
+
+    @RequestMapping(value = "/{id:.+}", method = RequestMethod.GET)
     public ModelAndView preview(@PathVariable("id") String id) {
         log.info("Person preview id = " + id);
 
@@ -71,5 +81,10 @@ public class PersonController {
     @ResponseBody
     public String addFriend(@RequestParam(value = "id") String id) {
         return personService.addFriend(id);
+    }
+
+    @MessageMapping("/friend")
+    public void acceptFriend(String id, Principal principal) {
+        template.convertAndSendToUser("ivomishev@gmail.com", "/acceptFriend", "test");
     }
 }

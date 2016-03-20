@@ -59,6 +59,16 @@ public class Person extends ParentEntity {
     @Setter
     private byte[] profilePicture;
 
+    @Column
+    @Getter
+    @Setter
+    private String uniqueName;
+
+    @Column
+    @Getter
+    @Setter
+    private Boolean friendAccepted;
+
     @Getter
     @Setter
     @ManyToMany
