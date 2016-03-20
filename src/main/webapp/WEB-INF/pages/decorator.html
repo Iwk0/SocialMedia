@@ -39,8 +39,8 @@
                 var socket = new SockJS('/friend');
                 stompClient = Stomp.over(socket);
                 stompClient.connect(headers, function (frame) {
-                    var email = [[${mainAccount.email}]];
-                    stompClient.subscribe('/user/' + email + '/acceptFriend', function (message) {
+                    var link = /*[[@{/user/{email}/acceptFriend(email=${mainAccount.email})}]]*/ '';
+                    stompClient.subscribe(link, function (message) {
                         $("#acceptFriend").css("color", "red");
                     });
                 });

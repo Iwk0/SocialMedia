@@ -131,6 +131,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!--MySQL driver-->
+        <!--        <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <version>${mysql.version}</version>
+                    <scope>compile</scope>
+                </dependency>-->
         <!--Hibernate-->
         <dependency>
             <groupId>org.hibernate</groupId>

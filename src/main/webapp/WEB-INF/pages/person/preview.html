@@ -30,7 +30,9 @@
                 /*<![CDATA[*/
                 $(function () {
                     $("#addFriend").on("click", function () {
-                        stompClient.send("/app/friend", {}, [[${person.id}]]);
+                        var link = /*[[@{/app/friend}]]*/ '';
+                        console.log(link);
+                        stompClient.send(link, {}, [[${person.id}]]);
                         /*var thisButton = $(this);
                         $.ajax({
                             url: '/addFriend',
