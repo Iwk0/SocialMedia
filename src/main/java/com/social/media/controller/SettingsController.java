@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 public class SettingsController {
@@ -21,8 +22,8 @@ public class SettingsController {
     private PersonService personService;
 
     @RequestMapping(value = "/settings", method = RequestMethod.GET)
-    public ModelAndView settings() {
-        ModelAndView modelAndView = new ModelAndView("/person/settings", "person", personService.findByEmail());
+    public ModelAndView settings(Principal principal) {
+        ModelAndView modelAndView = new ModelAndView("/person/settings", "person", personService.findByEmail(principal.getName()));
         modelAndView.addObject("picture", new Photo());
         return modelAndView;
     }

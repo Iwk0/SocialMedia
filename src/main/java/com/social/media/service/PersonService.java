@@ -6,11 +6,11 @@ import java.util.Set;
 
 public interface PersonService {
 
-    String addFriend(String id);
+    String addFriend(String id, String email);
 
-    String findFriend(String id);
+    String findFriend(String id, String email);
 
-    Person findByEmail();
+    Person findByEmail(String email);
 
     Person findOne(String id);
 

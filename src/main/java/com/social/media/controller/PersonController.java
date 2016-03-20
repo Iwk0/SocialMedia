@@ -1,5 +1,6 @@
 package com.social.media.controller;
 
+import com.social.media.model.Friend;
 import com.social.media.model.ParentEntity;
 import com.social.media.model.Person;
 import com.social.media.service.PersonService;
@@ -42,7 +43,7 @@ public class PersonController {
         log.info("Person preview id = " + id);
         ModelAndView modelAndView = new ModelAndView("/person/preview", "person", personService.findOne(id));
         modelAndView.addObject("friends", personService.findAllFriends(id));
-        modelAndView.addObject("addFriend", personService.findFriend(id));
+        modelAndView.addObject("addFriend", personService.findFriend(id, principal.getName()));
 
         return modelAndView;
     }
@@ -79,13 +80,21 @@ public class PersonController {
 
     @RequestMapping(value = "/addFriend", method = RequestMethod.POST)
     @ResponseBody
-    public String addFriend(@RequestParam(value = "id") String id) {
-        return personService.addFriend(id);
+    public String addFriend(@RequestParam(value = "id") String id, Principal principal) {
+        return personService.addFriend(id, principal.getName());
     }
 
     @MessageMapping("/friend")
-    public void acceptFriend(ParentEntity model) {
+    public void acceptFriend(ParentEntity model, Principal principal) {
+        Person person = personService.findByEmail(principal.getName());
+        Person friendPerson = personService.findOne(model.getId());
+
+        Friend friend = new Friend();
+        friend.setPerson(person);
+        friend.setFriend(friendPerson);
+        friend.setFriendAccepted(false);
+
         log.info("Message receive");
-        template.convertAndSendToUser(personService.findOne(model.getId()).getEmail(), "/queue/acceptFriend", "test");
+        template.convertAndSendToUser(personService.findOne(model.getId()).getEmail(), "/queue/acceptFriend", "friendRequest");
     }
 }

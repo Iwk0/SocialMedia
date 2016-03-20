@@ -64,17 +64,15 @@ public class Person extends ParentEntity {
     @Setter
     private String uniqueName;
 
-    @Column
     @Getter
     @Setter
-    private Boolean friendAccepted;
+    @OneToMany(mappedBy = "person")
+    private Set<Friend> persons;
 
     @Getter
     @Setter
-    @ManyToMany
-    @JoinTable(joinColumns = {@JoinColumn(name = "personId")}, inverseJoinColumns = {@JoinColumn(name = "friendId")})
-    @OrderBy(value = "firstName")
-    private Set<Person> friends;
+    @OneToMany(mappedBy = "friend")
+    private Set<Friend> friends;
 
     @Getter
     @Setter
@@ -105,12 +103,20 @@ public class Person extends ParentEntity {
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
 
-    public void addFriend(Person person) {
+    public void addFriend(Friend friend) {
         if (friends == null) {
             friends = new HashSet<>();
         }
 
-        friends.add(person);
+        friends.add(friend);
+    }
+
+    public void addPerson(Friend friend) {
+        if (persons == null) {
+            persons = new HashSet<>();
+        }
+
+        persons.add(friend);
     }
 
     public void addPhoto(Photo photo) {
