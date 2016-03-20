@@ -31,7 +31,6 @@
                 $(function () {
                     $("#addFriend").on("click", function () {
                         var link = /*[[@{/app/friend}]]*/ '';
-                        console.log(link);
                         stompClient.send(link, {}, [[${person.id}]]);
                         /*var thisButton = $(this);
                         $.ajax({
