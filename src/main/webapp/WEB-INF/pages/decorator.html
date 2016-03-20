@@ -39,7 +39,7 @@
             var socket = new SockJS('/friend');
             stompClient = Stomp.over(socket);
             stompClient.connect(headers, function (frame) {
-                var link = /*[[@{/user/{email}/acceptFriend(email=${mainAccount.email})}]]*/ '';
+                var link = /*[[@{/user/queue/acceptFriend}]]*/ '';
                 stompClient.subscribe(link, function (message) {
                     $("#acceptFriend").css("color", "red");
                 });

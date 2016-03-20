@@ -1,5 +1,6 @@
 package com.social.media.controller;
 
+import com.social.media.model.ParentEntity;
 import com.social.media.model.Person;
 import com.social.media.service.PersonService;
 import lombok.extern.log4j.Log4j;
@@ -37,9 +38,8 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/{id:.+}", method = RequestMethod.GET)
-    public ModelAndView preview(@PathVariable("id") String id) {
+    public ModelAndView preview(@PathVariable("id") String id, Principal principal) {
         log.info("Person preview id = " + id);
-
         ModelAndView modelAndView = new ModelAndView("/person/preview", "person", personService.findOne(id));
         modelAndView.addObject("friends", personService.findAllFriends(id));
         modelAndView.addObject("addFriend", personService.findFriend(id));
@@ -84,8 +84,8 @@ public class PersonController {
     }
 
     @MessageMapping("/friend")
-    public void acceptFriend(String id, Principal principal) {
+    public void acceptFriend(ParentEntity model) {
         log.info("Message receive");
-        template.convertAndSendToUser(personService.findOne(id).getEmail(), "/acceptFriend", "test");
+        template.convertAndSendToUser(personService.findOne(model.getId()).getEmail(), "/queue/acceptFriend", "test");
     }
 }

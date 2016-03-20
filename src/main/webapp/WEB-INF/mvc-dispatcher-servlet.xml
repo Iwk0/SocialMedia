@@ -22,7 +22,7 @@
         <websocket:stomp-endpoint path="/friend">
             <websocket:sockjs/>
         </websocket:stomp-endpoint>
-        <websocket:simple-broker prefix="/user"/>
+        <websocket:simple-broker prefix="/user, /queue"/>
     </websocket:message-broker>
 
     <mvc:annotation-driven/>
