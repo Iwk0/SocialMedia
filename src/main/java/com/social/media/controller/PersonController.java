@@ -86,6 +86,6 @@ public class PersonController {
     @MessageMapping("/friend")
     public void acceptFriend(String id, Principal principal) {
         log.info("Message receive");
-        template.convertAndSendToUser("ivomishev@gmail.com", "/acceptFriend", "test");
+        template.convertAndSendToUser(personService.findOne(id).getEmail(), "/acceptFriend", "test");
     }
 }
