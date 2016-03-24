@@ -18,7 +18,7 @@ public class Album extends ParentEntity {
     @Getter
     @Setter
     @ManyToOne
-    @JoinColumn(name = "personId")
+    @JoinColumn(name = "person_id")
     private Person person;
 
     @Getter

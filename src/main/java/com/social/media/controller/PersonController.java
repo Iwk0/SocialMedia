@@ -90,9 +90,9 @@ public class PersonController {
         Person friendPerson = personService.findOne(model.getId());
 
         Friend friend = new Friend();
-        friend.setPerson(person);
+/*        friend.setPerson(person);
         friend.setFriend(friendPerson);
-        friend.setFriendAccepted(false);
+        friend.setFriendAccepted(false);*/
 
         friendRepository.save(friend);
 

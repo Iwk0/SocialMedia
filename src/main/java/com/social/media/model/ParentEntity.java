@@ -21,12 +21,12 @@ public class ParentEntity implements Serializable {
     @Setter
     private String id;
 
-    @Column
+    @Column(name = "date_created")
     @Getter
     @Setter
     private Date dateCreated;
 
-    @Column
+    @Column(name = "date_last_modified")
     @Getter
     @Setter
     private Date dateLastModified;

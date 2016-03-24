@@ -16,13 +16,13 @@ import java.util.Set;
 @MatchPassword
 public class Person extends ParentEntity {
 
-    @Column
+    @Column(name = "first_name")
     @Getter
     @Setter
     @Size(min = 3)
     private String firstName;
 
-    @Column
+    @Column(name = "last_name")
     @Getter
     @Setter
     @Size(min = 3)
@@ -54,24 +54,22 @@ public class Person extends ParentEntity {
     private String rawPassword;
 
     @Lob
-    @Column
+    @Column(name = "profile_picture")
     @Getter
     @Setter
     private byte[] profilePicture;
 
-    @Column
+    @Column(name = "unique_name")
     @Getter
     @Setter
     private String uniqueName;
 
     @Getter
     @Setter
-    @OneToMany(mappedBy = "person")
-    private Set<Friend> persons;
-
-    @Getter
-    @Setter
-    @OneToMany(mappedBy = "friend", fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "person_to_friend",
+            joinColumns = {@JoinColumn(name = "person_id")},
+            inverseJoinColumns = {@JoinColumn(name = "friend_id")})
     private Set<Friend> friends;
 
     @Getter
@@ -111,13 +109,13 @@ public class Person extends ParentEntity {
         friends.add(friend);
     }
 
-    public void addPerson(Friend friend) {
+/*    public void addPerson(Friend friend) {
         if (persons == null) {
             persons = new HashSet<>();
         }
 
         persons.add(friend);
-    }
+    }*/
 
     public void addPhoto(Photo photo) {
         if (photos == null) {

@@ -5,8 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
+import java.util.Set;
 
 @Entity
 public class Friend extends ParentEntity {
@@ -18,13 +18,6 @@ public class Friend extends ParentEntity {
 
     @Getter
     @Setter
-    @ManyToOne
-    @JoinColumn(name = "personId")
-    private Person person;
-
-    @Getter
-    @Setter
-    @ManyToOne
-    @JoinColumn(name = "friendId")
-    private Person friend;
+    @ManyToMany(mappedBy = "friends")
+    private Set<Person> friends;
 }
