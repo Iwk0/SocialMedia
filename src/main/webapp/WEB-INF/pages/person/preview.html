@@ -23,9 +23,9 @@
                 </button>
             </div>
             <div style="clear: both"></div>
-            <!--            <a href="#" th:each="friend : ${friends}"
-                           th:href="@{/{id}(id=${friend.id})}"
-                           th:text="${friend.firstName + ' ' + friend.lastName}"></a>-->
+            <a href="#" th:each="friend : ${mainAccount.friends}"
+               th:href="@{/{id}(id=${friend.id})}"
+               th:text="${friend.friend.firstName + ' ' + friend.friend.lastName}"></a>
             <script th:inline="javascript">
                 /*<![CDATA[*/
                 $(function () {

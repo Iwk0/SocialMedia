@@ -71,7 +71,7 @@ public class Person extends ParentEntity {
 
     @Getter
     @Setter
-    @OneToMany(mappedBy = "friend")
+    @OneToMany(mappedBy = "friend", fetch = FetchType.EAGER)
     private Set<Friend> friends;
 
     @Getter
