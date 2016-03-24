@@ -3,6 +3,7 @@ package com.social.media.controller;
 import com.social.media.model.Friend;
 import com.social.media.model.ParentEntity;
 import com.social.media.model.Person;
+import com.social.media.repository.FriendRepository;
 import com.social.media.service.PersonService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,10 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -31,6 +35,9 @@ public class PersonController {
     @Qualifier(value = "personService")
     private PersonService personService;
 
+    @Autowired
+    private FriendRepository friendRepository;
+
     private SimpMessagingTemplate template;
 
     @Autowired
@@ -42,7 +49,6 @@ public class PersonController {
     public ModelAndView preview(@PathVariable("id") String id, Principal principal) {
         log.info("Person preview id = " + id);
         ModelAndView modelAndView = new ModelAndView("/person/preview", "person", personService.findOne(id));
-        modelAndView.addObject("friends", personService.findAllFriends(id));
         modelAndView.addObject("addFriend", personService.findFriend(id, principal.getName()));
 
         return modelAndView;
@@ -78,12 +84,6 @@ public class PersonController {
         return "redirect:/login";
     }
 
-    @RequestMapping(value = "/addFriend", method = RequestMethod.POST)
-    @ResponseBody
-    public String addFriend(@RequestParam(value = "id") String id, Principal principal) {
-        return personService.addFriend(id, principal.getName());
-    }
-
     @MessageMapping("/friend")
     public void acceptFriend(ParentEntity model, Principal principal) {
         Person person = personService.findByEmail(principal.getName());
@@ -93,6 +93,8 @@ public class PersonController {
         friend.setPerson(person);
         friend.setFriend(friendPerson);
         friend.setFriendAccepted(false);
+
+        friendRepository.save(friend);
 
         log.info("Message receive");
         template.convertAndSendToUser(personService.findOne(model.getId()).getEmail(), "/queue/acceptFriend", "friendRequest");

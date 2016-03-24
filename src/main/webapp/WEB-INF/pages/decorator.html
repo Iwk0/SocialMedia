@@ -26,25 +26,25 @@
                 $("#logoutForm").submit();
             });
 
+            function connect() {
+                var token = $("meta[name='_csrf']").attr("content");
+                var headerName = $("meta[name='_csrf_header']").attr("content");
+
+                var headers = {};
+                headers[headerName] = token;
+
+                var socket = new SockJS('/friend');
+                stompClient = Stomp.over(socket);
+                stompClient.connect(headers, function (frame) {
+                    var link = /*[[@{/user/queue/acceptFriend}]]*/ '';
+                    stompClient.subscribe(link, function (message) {
+                        $("#acceptFriend").css("color", "red");
+                    });
+                });
+            }
+
             connect();
         });
-
-        function connect() {
-            var token = $("meta[name='_csrf']").attr("content");
-            var headerName = $("meta[name='_csrf_header']").attr("content");
-
-            var headers = {};
-            headers[headerName] = token;
-
-            var socket = new SockJS('/friend');
-            stompClient = Stomp.over(socket);
-            stompClient.connect(headers, function (frame) {
-                var link = /*[[@{/user/queue/acceptFriend}]]*/ '';
-                stompClient.subscribe(link, function (message) {
-                    $("#acceptFriend").css("color", "red");
-                });
-            });
-        }
         /*]]>*/
     </script>
 </head>

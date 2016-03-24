@@ -23,36 +23,15 @@
                 </button>
             </div>
             <div style="clear: both"></div>
-            <a href="#" th:each="friend : ${friends}"
-               th:href="@{/{id}(id=${friend.id})}"
-               th:text="${friend.firstName + ' ' + friend.lastName}"></a>
+            <!--            <a href="#" th:each="friend : ${friends}"
+                           th:href="@{/{id}(id=${friend.id})}"
+                           th:text="${friend.firstName + ' ' + friend.lastName}"></a>-->
             <script th:inline="javascript">
                 /*<![CDATA[*/
                 $(function () {
                     $("#addFriend").on("click", function () {
                         var link = /*[[@{/app/friend}]]*/ '';
                         stompClient.send(link, {}, JSON.stringify({id: [[${person.id}]]}));
-                        /*var thisButton = $(this);
-                        $.ajax({
-                            url: '/addFriend',
-                            type: 'POST',
-                            data: {
-                                id: $("#personId").val()
-                            },
-                            dataType: 'text',
-                            beforeSend: function (xhr) {
-                                var token = $("meta[name='_csrf']").attr("content");
-                                var header = $("meta[name='_csrf_header']").attr("content");
-                                xhr.setRequestHeader(header, token);
-                            },
-                            success: function (data) {
-                                if (data === "SUCCESS") {
-                                    thisButton.remove();
-                                } else {
-                                    console.log("CANNOT ADD");
-                                }
-                            }
-                         });*/
                     });
                 });
                 /*]]>*/
