@@ -74,7 +74,7 @@ public class PersonController {
 
         log.info("Person is registered successfully");
 
-        return "redirect:/login";
+        return "/login";
     }
 
     @MessageMapping("/friend")
