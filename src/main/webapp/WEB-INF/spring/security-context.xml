@@ -18,14 +18,13 @@
 
     <http use-expressions="true">
         <intercept-url pattern="/login*" access="isAnonymous()"/>
-        <intercept-url pattern="/new" access="isAnonymous()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
 
         <form-login login-page="/login"
                     default-target-url="/"
                     username-parameter="email"
                     password-parameter="password"
-                    authentication-failure-url="/login?loginError=1"/>
+                    authentication-failure-url="/login?error=true"/>
 
         <logout logout-url="/logout" logout-success-url="/login"/>
         <csrf/>

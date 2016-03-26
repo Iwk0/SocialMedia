@@ -20,7 +20,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage(@RequestParam(value = "loginError", required = false) String error, Model model) {
+    public String loginPage(@RequestParam(value = "error", required = false) String error, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("person", new Person());
 

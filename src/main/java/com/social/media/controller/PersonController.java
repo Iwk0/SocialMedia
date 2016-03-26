@@ -47,7 +47,7 @@ public class PersonController {
         return new ModelAndView("/person/preview", "person", personService.findOne(id));
     }
 
-    @RequestMapping(value = "/new", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String create(@Valid @ModelAttribute("person") Person person, BindingResult result) {
         if (result.hasErrors()) {
             log.error("Cannot register person");
