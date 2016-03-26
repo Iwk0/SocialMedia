@@ -8,16 +8,20 @@
                 <img src="#" th:src="@{/picture/{id}(id=*{id})}" style="float: left" width="200px" height="200px"/>
                 <p>
                     <th:block th:text="#{label.firstName}"/>
-                    : <label th:text="*{firstName}">...</label></p>
+                    : <label th:text="*{firstName}">...</label>
+                </p>
                 <p>
                     <th:block th:text="#{label.lastName}"/>
-                    : <label th:text="*{lastName}">...</label></p>
+                    : <label th:text="*{lastName}">...</label>
+                </p>
                 <p>
                     <th:block th:text="#{label.surname}"/>
-                    : <label th:text="*{surname}">...</label></p>
+                    : <label th:text="*{surname}">...</label>
+                </p>
                 <p>
                     <th:block th:text="#{label.email}"/>
-                    : <label th:text="*{email}">...</label></p>
+                    : <label th:text="*{email}">...</label>
+                </p>
                 <button class="btn btn-default" id="addFriend"
                         th:if="${#authentication.name} ne *{email} and ${addFriend eq null}">Add friend
                 </button>
