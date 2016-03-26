@@ -33,9 +33,6 @@ public class PersonController {
     @Qualifier(value = "personService")
     private PersonService personService;
 
-    @Autowired
-    private FriendRepository friendRepository;
-
     private SimpMessagingTemplate template;
 
     @Autowired
@@ -46,10 +43,8 @@ public class PersonController {
     @RequestMapping(value = "/{id:.+}", method = RequestMethod.GET)
     public ModelAndView preview(@PathVariable("id") String id, Principal principal) {
         log.info("Person preview id = " + id);
-        ModelAndView modelAndView = new ModelAndView("/person/preview", "person", personService.findOne(id));
-        modelAndView.addObject("addFriend", personService.findFriend(id, principal.getName()));
 
-        return modelAndView;
+        return new ModelAndView("/person/preview", "person", personService.findOne(id));
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
@@ -86,13 +81,6 @@ public class PersonController {
     public void acceptFriend(ParentEntity model, Principal principal) {
         Person person = personService.findByEmail(principal.getName());
         Person friendPerson = personService.findOne(model.getId());
-
-        Friend friend = new Friend();
-/*        friend.setPerson(person);
-        friend.setFriend(friendPerson);
-        friend.setFriendAccepted(false);*/
-
-        friendRepository.save(friend);
 
         log.info("Message receive");
         template.convertAndSendToUser(personService.findOne(model.getId()).getEmail(), "/queue/acceptFriend", "friendRequest");

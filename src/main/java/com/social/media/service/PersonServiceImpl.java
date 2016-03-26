@@ -13,19 +13,6 @@ public class PersonServiceImpl implements PersonService {
     private PersonRepository personRepository;
 
     @Override
-    @Transactional(readOnly = false)
-    public String addFriend(String id, String email) {
-        Person person = personRepository.findByEmail(email);
-
-        if (personRepository.findSpecificFriend(person.getId(), id) != null) {
-            return "FAIL";
-        }
-
-        personRepository.save(person);
-        return "SUCCESS";
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public Person findByEmail(String email) {
         return personRepository.findByEmail(email);
@@ -41,11 +28,5 @@ public class PersonServiceImpl implements PersonService {
     @Transactional(readOnly = false)
     public Person save(Person person) {
         return personRepository.save(person);
-    }
-
-    @Override
-    public String findFriend(String id, String email) {
-        Person person = personRepository.findByEmail(email);
-        return personRepository.findSpecificFriend(person.getId(), id);
     }
 }
