@@ -79,9 +79,6 @@ public class PersonController {
 
     @MessageMapping("/friend")
     public void acceptFriend(ParentEntity model, Principal principal) {
-        Person person = personService.findByEmail(principal.getName());
-        Person friendPerson = personService.findOne(model.getId());
-
         log.info("Message receive");
         template.convertAndSendToUser(personService.findOne(model.getId()).getEmail(), "/queue/acceptFriend", "friendRequest");
     }
