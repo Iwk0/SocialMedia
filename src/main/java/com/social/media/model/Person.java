@@ -66,14 +66,6 @@ public class Person extends ParentEntity {
 
     @Getter
     @Setter
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "person_to_friend",
-            joinColumns = {@JoinColumn(name = "person_id")},
-            inverseJoinColumns = {@JoinColumn(name = "friend_id")})
-    private Set<Friend> friends;
-
-    @Getter
-    @Setter
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
     private Set<Photo> photos;
 
@@ -100,22 +92,6 @@ public class Person extends ParentEntity {
     @NotNull
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
-
-    public void addFriend(Friend friend) {
-        if (friends == null) {
-            friends = new HashSet<>();
-        }
-
-        friends.add(friend);
-    }
-
-/*    public void addPerson(Friend friend) {
-        if (persons == null) {
-            persons = new HashSet<>();
-        }
-
-        persons.add(friend);
-    }*/
 
     public void addPhoto(Photo photo) {
         if (photos == null) {

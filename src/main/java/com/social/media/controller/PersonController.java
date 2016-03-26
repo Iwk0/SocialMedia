@@ -1,9 +1,7 @@
 package com.social.media.controller;
 
-import com.social.media.model.Friend;
 import com.social.media.model.ParentEntity;
 import com.social.media.model.Person;
-import com.social.media.repository.FriendRepository;
 import com.social.media.service.PersonService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;

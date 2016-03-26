@@ -1,7 +1,6 @@
 package com.social.media.service;
 
 import com.social.media.model.Person;
-import com.social.media.repository.FriendRepository;
 import com.social.media.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +12,6 @@ public class PersonServiceImpl implements PersonService {
     @Autowired
     private PersonRepository personRepository;
 
-    @Autowired
-    private FriendRepository friendRepository;
-
     @Override
     @Transactional(readOnly = false)
     public String addFriend(String id, String email) {
@@ -25,7 +21,6 @@ public class PersonServiceImpl implements PersonService {
             return "FAIL";
         }
 
-        person.addFriend(friendRepository.findOne(id));
         personRepository.save(person);
         return "SUCCESS";
     }
