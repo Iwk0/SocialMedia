@@ -53,11 +53,11 @@ public class Person extends ParentEntity {
     @Size(min = 6, max = 36)
     private String rawPassword;
 
-    @Lob
-    @Column(name = "profile_picture")
+    @OneToOne(cascade = CascadeType.ALL)
     @Getter
     @Setter
-    private byte[] profilePicture;
+    @JoinColumn(name = "profile_picture")
+    private Photo profilePicture;
 
     @Column(name = "unique_name")
     @Getter

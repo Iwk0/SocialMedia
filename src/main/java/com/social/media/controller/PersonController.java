@@ -1,7 +1,9 @@
 package com.social.media.controller;
 
+import com.social.media.model.Album;
 import com.social.media.model.ParentEntity;
 import com.social.media.model.Person;
+import com.social.media.model.Photo;
 import com.social.media.service.PersonService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +65,20 @@ public class PersonController {
             Path path = Paths.get(IMAGE_PATH);
             byte[] data = Files.readAllBytes(path);
 
-            person.setProfilePicture(data);
+            Photo profilePicture = new Photo();
+            profilePicture.setImage(data);
+            profilePicture.setName("Profile picture");
+            profilePicture.setProfilePicture(person);
+            profilePicture.setDescription("Profile picture");
+
+            Album album = new Album();
+            album.setName("Profile picture");
+            album.addPhoto(profilePicture);
+
+            profilePicture.setAlbum(album);
+
+            person.addAlbum(album);
+            person.setProfilePicture(profilePicture);
         } catch (IOException e) {
             log.error("IOException", e);
         }
