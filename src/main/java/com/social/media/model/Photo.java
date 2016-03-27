@@ -26,14 +26,14 @@ public class Photo extends ParentEntity {
 
     @Getter
     @Setter
-    @JoinColumn(name = "personId")
     @ManyToOne
+    @JoinColumn(name = "person_id")
     private Person person;
 
     @Getter
     @Setter
-    @JoinColumn(name = "albumId")
     @ManyToOne
+    @JoinColumn(name = "album_id")
     private Album album;
 
     @Getter

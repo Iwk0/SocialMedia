@@ -67,9 +67,7 @@ public class PersonController {
 
             Photo profilePicture = new Photo();
             profilePicture.setImage(data);
-            profilePicture.setName("Profile picture");
             profilePicture.setProfilePicture(person);
-            profilePicture.setDescription("Profile picture");
 
             Album album = new Album();
             album.setName("Profile picture");

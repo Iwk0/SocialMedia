@@ -16,16 +16,16 @@ import java.util.Set;
 @MatchPassword
 public class Person extends ParentEntity {
 
-    @Column(name = "first_name")
     @Getter
     @Setter
     @Size(min = 3)
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "last_name")
     @Getter
     @Setter
     @Size(min = 3)
+    @Column(name = "last_name")
     private String lastName;
 
     @Column
@@ -35,10 +35,10 @@ public class Person extends ParentEntity {
     private String surname;
 
     @Email
-    @Column(unique = true)
     @Getter
     @Setter
     @UniqueEmail
+    @Column(unique = true)
     private String email;
 
     @Column
@@ -47,22 +47,22 @@ public class Person extends ParentEntity {
     @Size(min = 6, max = 36)
     private String password;
 
-    @Transient
     @Getter
     @Setter
+    @Transient
     @Size(min = 6, max = 36)
     private String rawPassword;
 
-    @OneToOne(cascade = CascadeType.ALL)
     @Getter
     @Setter
-    @JoinColumn(name = "profile_picture")
-    private Photo profilePicture;
-
     @Column(name = "unique_name")
+    private String uniqueName;
+
     @Getter
     @Setter
-    private String uniqueName;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_picture_id")
+    private Photo profilePicture;
 
     @Getter
     @Setter
