@@ -35,6 +35,9 @@ public class PersonController {
     @Qualifier(value = "personService")
     private PersonService personService;
 
+/*    @Resource(name = "messageSource")
+    private MessageSource messageSource;*/
+
     private SimpMessagingTemplate template;
 
     @Autowired
@@ -69,8 +72,10 @@ public class PersonController {
             profilePicture.setImage(data);
             profilePicture.setProfilePicture(person);
 
+            //Locale locale = LocaleContextHolder.getLocale();
+            //messageSource.getMessage("album.profile.picture", null, locale)
             Album album = new Album();
-            album.setName("Profile picture");
+            album.setName("album.profile.picture");
             album.addPhoto(profilePicture);
 
             profilePicture.setAlbum(album);
