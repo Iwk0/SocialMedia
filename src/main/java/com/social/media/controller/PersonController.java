@@ -21,10 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
 
 @Log4j
@@ -59,32 +55,25 @@ public class PersonController {
             return "/login";
         }
 
-        try {
-            final String IMAGE_PATH = System.getProperty("user.dir") +
-                    File.separator + "src" + File.separator + "main" +
-                    File.separator + "webapp" + File.separator + "resources" +
-                    File.separator + "images" + File.separator + person.getGender() + ".jpg";
+        final String IMAGE_PATH = System.getProperty("user.dir") +
+                File.separator + "src" + File.separator + "main" +
+                File.separator + "webapp" + File.separator + "resources" +
+                File.separator + "images" + File.separator + person.getGender() + ".jpg";
 
-            Path path = Paths.get(IMAGE_PATH);
-            byte[] data = Files.readAllBytes(path);
+        Photo profilePicture = new Photo();
+        profilePicture.setPath(IMAGE_PATH);
+        profilePicture.setProfilePicture(person);
 
-            Photo profilePicture = new Photo();
-            profilePicture.setImage(data);
-            profilePicture.setProfilePicture(person);
+        //Locale locale = LocaleContextHolder.getLocale();
+        //messageSource.getMessage("album.profile.picture", null, locale)
+        Album album = new Album();
+        album.setName("album.profile.picture");
+        album.addPhoto(profilePicture);
 
-            //Locale locale = LocaleContextHolder.getLocale();
-            //messageSource.getMessage("album.profile.picture", null, locale)
-            Album album = new Album();
-            album.setName("album.profile.picture");
-            album.addPhoto(profilePicture);
+        profilePicture.setAlbum(album);
 
-            profilePicture.setAlbum(album);
-
-            person.addAlbum(album);
-            person.setProfilePicture(profilePicture);
-        } catch (IOException e) {
-            log.error("IOException", e);
-        }
+        person.addAlbum(album);
+        person.setProfilePicture(profilePicture);
 
         ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder(256);
         person.setPassword(shaPasswordEncoder.encodePassword(person.getPassword(), ""));

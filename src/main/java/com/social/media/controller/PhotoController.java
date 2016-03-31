@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Log4j
 @Controller
@@ -36,7 +39,10 @@ public class PhotoController {
     public String uploadImage(@ModelAttribute(value = "picture") Photo photo,
                               @RequestParam("file") MultipartFile file) {
         try {
-            photo.setImage(file.getBytes());
+            Path image = Paths.get("E://IMAGES//" + photo.getName());
+            Files.write(image, file.getBytes());
+
+            photo.setPath(image.toAbsolutePath().toString());
             photoService.addPhoto(photo);
             log.info("Photo added successfully");
         } catch (IOException e) {

@@ -13,11 +13,10 @@ public class Photo extends ParentEntity {
     @Setter
     private String name;
 
-    @Lob
     @Column
     @Getter
     @Setter
-    private byte[] image;
+    private String path;
 
     @Column
     @Getter
